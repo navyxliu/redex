@@ -45,19 +45,30 @@ TESTS = \
 TEST_LIBS = $(top_builddir)/test/libgtest_main.la $(top_builddir)/libredex.la
 
 synth_test_SOURCES = SynthTest.cpp
-synth_test_LDADD = $(TEST_LIBS)
+synth_test_LDADD = $(TEST_LIBS) $(top_builddir)/opt/local-dce/LocalDce.o \
+				   $(top_builddir)/opt/rebindrefs/ReBindRefs.o \
+				   $(top_builddir)/opt/synth/Synth.o
+
 EXTRA_synth_test_DEPENDENCIES = synth-test-class.dex
 
 empty_classes_test_SOURCES = EmptyClassesTest.cpp
-empty_classes_test_LDADD = $(TEST_LIBS)
+empty_classes_test_LDADD = $(TEST_LIBS) $(top_builddir)/opt/delinit/DelInit.o \
+						   $(top_builddir)/opt/remove_empty_classes/RemoveEmptyClasses.o
+
 EXTRA_empty_classes_test_DEPENDENCIES = empty-classes-test-class.dex
 
 propagation_test_SOURCES = PropagationTest.cpp
-propagation_test_LDADD = $(TEST_LIBS)
+propagation_test_LDADD = $(TEST_LIBS) $(top_builddir)/opt/local-dce/LocalDce.o \
+						 $(top_builddir)/opt/peephole/Peephole.o
+
 EXTRA_propagation_test_DEPENDENCIES = propagation-test-class.dex
 
 constant_propagation_test_SOURCES = ConstantPropagationTest.cpp
-constant_propagation_test_LDADD = $(TEST_LIBS)
+constant_propagation_test_LDADD = $(TEST_LIBS) $(top_builddir)/opt/delinit/DelInit.o \
+						$(top_builddir)/opt/local-dce/LocalDce.o \
+						$(top_builddir)/opt/remove_empty_classes/RemoveEmptyClasses.o \
+						$(top_builddir)/opt/constant_propagation/ConstantPropagation.o
+
 EXTRA_constant_propagation_test_DEPENDENCIES = constant-propagation-test-class.dex
 
 check_PROGRAMS = $(TESTS)
